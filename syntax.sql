@@ -219,7 +219,7 @@ SELECT bio, COUNT(bio) as total FROM user WHERE bio LIKE '%Dev%' GROUP BY bio;
 SELECT bio, COUNT(bio) as total FROM user GROUP BY bio ORDER BY total DESC;
 SELECT bio, COUNT(bio) as total FROM user GROUP BY bio ORDER BY total DESC LIMIT 1,1;
 SELECT bio, COUNT(bio) as total FROM user GROUP BY bio HAVING total > 3;
-SELECT SUM(likes)  AS total_likes, AVG(likes), COUNT(bio), bio FROM user GROUP BY bio;
+SELECT SUM(likes) AS total_likes, AVG(likes), COUNT(bio), bio FROM user GROUP BY bio;
 SELECT MIN(likes), bio from user GROUP BY bio;
 SELECT MIN(likes) from user;
 
@@ -227,3 +227,170 @@ SELECT id, name, likes from user where likes in (SELECT MIN(likes) from user);
 
 SELECT MIN(likes), bio from user GROUP BY bio;
 SELECT id, name, bio, likes from user where likes in (SELECT MIN(likes) from user GROUP BY bio);
+
+# RELATIONS
+CREATE TABLE `boys` (
+    `boy_id` int(2) NOT NULL AUTO_INCREMENT,
+    `boy` varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`boy_id`)
+);
+
+CREATE TABLE `toys` (
+    `toy_id` int(2) NOT NULL AUTO_INCREMENT,
+    `toy` varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`toy_id`)
+);
+
+INSERT INTO boys (boy) VALUES ('David'), ('Maks'), ('Vlad'), ('Anton');
+INSERT INTO toys (toy) VALUES ('hula hoop'), ('solder'), ('boll'), ('bycicle'), ('stick');
+
+SELECT t.toy, b.boy
+FROM
+    toys AS t
+CROSS JOIN
+    boys AS b;
+
+SELECT b1.boy, b2.boy
+FROM
+    boys AS b1
+CROSS JOIN
+    boys AS b2;
+
+CREATE TABLE `boysWithToys` (
+    `boy_id` int(2) NOT NULL AUTO_INCREMENT,
+    `boy` varchar(50) DEFAULT NULL,
+    `toy_id` int(2) DEFAULT NULL,
+    PRIMARY KEY (`boy_id`)
+);
+INSERT INTO boysWithToys (boy, toy_id) VALUES ('David', 2), ('Maks', 2), ('Vlad', 1), ('Anton', NULL);
+
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+    NATURAL JOIN
+     toys;
+
+ALTER TABLE toys CHANGE toy_id id int(2) NOT NULL AUTO_INCREMENT;
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+INNER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+CROSS JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+LEFT OUTER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM toys
+LEFT OUTER JOIN
+     boysWithToys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+RIGHT OUTER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+-- Записи без подчиненных
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+RIGHT OUTER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id
+where boysWithToys.boy is null;
+
+# FULL
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+LEFT OUTER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id
+UNION
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+RIGHT OUTER JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+SELECT boysWithToys.boy, toys.toy
+FROM toys
+INNER JOIN
+     boysWithToys
+    ON boysWithToys.toy_id <> toys.id
+ORDER BY boysWithToys.boy;
+
+CREATE TABLE boysAndToysCache AS
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+CREATE VIEW boysAndToysView AS
+SELECT boysWithToys.boy, toys.toy
+FROM boysWithToys
+JOIN
+     toys
+    ON boysWithToys.toy_id = toys.id;
+
+UPDATE boysWithToys SET toy_id = 4 WHERE boy = 'Anton';
+
+show create table boysAndToysCache;
+show create table boysAndToysView;
+
+CREATE TABLE boyToToy AS
+SELECT boy_id, toy_id FROM boysWithToys WHERE toy_id IS NOT NULL;
+INSERT INTO boyToToy VALUES (1,3), (2,3), (2,1), (1,1);
+
+SELECT boys.boy, toys.toy
+FROM boys
+JOIN boyToToy ON (boys.boy_id = boyToToy.boy_id)
+JOIN toys ON (boyToToy.toy_id = toys.id);
+
+
+CREATE TABLE `boysWithKeyToys` (
+    `boy_id` int(2) NOT NULL AUTO_INCREMENT,
+    `boy` varchar(50) DEFAULT NULL,
+    `toy_id` int(2),
+    PRIMARY KEY (`boy_id`),
+CONSTRAINT constr FOREIGN KEY (toy_id) REFERENCES toys (id)
+);
+
+INSERT INTO boysWithKeyToys (boy, toy_id)
+VALUES ('David', 2), ('Maks', 2), ('Vlad', 1), ('Anton', NULL);
+INSERT INTO boysWithKeyToys (boy, toy_id)
+VALUES ('Imposible', 99);
+
+# tbd
+CREATE TABLE `boysWithKeyToysSpecial` (
+    `boy_id` int(2) NOT NULL AUTO_INCREMENT,
+    `boy` varchar(50) DEFAULT NULL,
+    `toy_id` int(2),
+    PRIMARY KEY (`boy_id`),
+CONSTRAINT constrSpecial FOREIGN KEY (toy_id) REFERENCES toys (id)
+    ON UPDATE SET NULL
+);
+INSERT INTO boysWithKeyToysSpecial (boy, toy_id)
+VALUES ('Imposible', 99);
+
+SELECT boysWithKeyToys.boy, toys.toy
+FROM boysWithKeyToys
+         NATURAL JOIN
+     toys;
