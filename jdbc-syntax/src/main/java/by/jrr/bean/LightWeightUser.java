@@ -12,17 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class LightWeightUser {
     private Integer id;
     private String login;
     private String name;
-    private String bio;
-    private byte[] image;
-    private LocalDate birth;
-    private LocalDateTime registered;
-    private LocalDateTime updated;
-    private Character gender;
-    private Double credit;
-    private Boolean active;
     private int likes;
 }
