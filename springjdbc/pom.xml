@@ -24,12 +24,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.3.24.RELEASE</version>
+            <version>5.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.3.24.RELEASE</version>
+            <version>5.3.1</version>
         </dependency>
 
         <dependency>
@@ -54,6 +54,14 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.6.3</version>
+            <scope>test</scope>
+        </dependency>
+
+<!--        to get Spring context in tests-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
 
