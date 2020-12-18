@@ -34,13 +34,13 @@ class UserDaoTest {
             userDao.preparedFindById(33);
         }
         LocalDateTime timeStamp3 = LocalDateTime.now();
-
-        long commonDuration = Duration.between(timeStamp1, timeStamp2).toSeconds();
-        long preparedDuration = Duration.between(timeStamp2, timeStamp3).toSeconds();
-        double rate = preparedDuration / (double) commonDuration * 100;
-        System.out.println("Common " + commonDuration);
-        System.out.println("Prepare " + preparedDuration);
-        System.out.println("pre\\comm " + rate);
+//
+//        long commonDuration = Duration.between(timeStamp1, timeStamp2).toSeconds();
+//        long preparedDuration = Duration.between(timeStamp2, timeStamp3).toSeconds();
+//        double rate = preparedDuration / (double) commonDuration * 100;
+//        System.out.println("Common " + commonDuration);
+//        System.out.println("Prepare " + preparedDuration);
+//        System.out.println("pre\\comm " + rate);
     }
 
     @Test

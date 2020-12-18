@@ -31,16 +31,16 @@ class UserDaoSyntaxExampleTest {
 
         LocalDateTime timeStamp4 = LocalDateTime.now();
 
-        long batchDuration = Duration.between(timeStamp1, timeStamp2).toSeconds();
-        long commonDuration = Duration.between(timeStamp2, timeStamp3).toSeconds();
-        long connectionDuration = Duration.between(timeStamp3, timeStamp4).toSeconds();
+//        long batchDuration = Duration.between(timeStamp1, timeStamp2).toSeconds();
+//        long commonDuration = Duration.between(timeStamp2, timeStamp3).toSeconds();
+//        long connectionDuration = Duration.between(timeStamp3, timeStamp4).toSeconds();
 
-        double rate = batchDuration / (double) commonDuration * 100;
-
-        System.out.println("Batch " + batchDuration);
-        System.out.println("Common " + commonDuration);
-        System.out.println("connectionDuration " + connectionDuration);
-        System.out.println("pre\\comm " + rate);
+//        double rate = batchDuration / (double) commonDuration * 100;
+//
+//        System.out.println("Batch " + batchDuration);
+//        System.out.println("Common " + commonDuration);
+//        System.out.println("connectionDuration " + connectionDuration);
+//        System.out.println("pre\\comm " + rate);
 
     }
 

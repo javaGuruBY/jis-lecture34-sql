@@ -54,7 +54,7 @@ public class UserDao implements Dao<User, Integer> {
         User user = null;
         try (Connection connection = getConnection();
              PreparedStatement st = connection.prepareStatement(PREPARED_SELECT_USER_BY_ID)) {
-            st.setInt(1, 24);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 user = mapRsToUser(rs);
