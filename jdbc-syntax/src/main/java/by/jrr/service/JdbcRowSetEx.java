@@ -63,7 +63,7 @@ public class JdbcRowSetEx {
             rowSet.moveToInsertRow();
             rowSet.updateInt("likes", 888);
             rowSet.updateString("birth", "2020-12-12");
-            rowSet.updateString("login", "maksim4444ik");
+            rowSet.updateString("login", "Here I Inset row");
             rowSet.insertRow();
 
             rowSet.afterLast();
@@ -112,10 +112,10 @@ public class JdbcRowSetEx {
                 .name(rs.getString("name"))
                 .bio(rs.getString("bio"))
                 .image(rs.getBytes("image"))
-                .birth(LocalDate.parse(rs.getDate("birth").toString()))
+//                .birth(LocalDate.parse(rs.getDate("birth").toString()))
 //                .registered(rs.getObject("registered", LocalDateTime.class))
 //                .updated(rs.getObject("updated", LocalDateTime.class))
-                .gender(rs.getString("gender").charAt(0))
+//                .gender(rs.getString("gender").charAt(0))
                 .likes(rs.getInt("likes"))
                 .credit(rs.getDouble("credit"))
                 .active(rs.getBoolean("active"))
