@@ -12,7 +12,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HumanDao {
@@ -29,7 +32,7 @@ public class HumanDao {
     // CRUD
 
     public Human findHumanById(Long id) {
-        String query = "SELECT * FROM human WHERE id="+id;
+        String query = "SELECT * FROM human WHERE id=" + id;
         List<Human> result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Human.class));
         if (!result.isEmpty()) {
             return result.get(0);
@@ -37,8 +40,22 @@ public class HumanDao {
         return null;
     }
 
+    public List<Human> findHumanInId(Long... id) {
+        String inIds = Arrays.stream(id)
+                .map(a -> String.valueOf(a))
+                .collect(Collectors.joining(","));
+
+        String query = String.format("SELECT * FROM human WHERE id IN (%s)", inIds);
+        List<Human> result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Human.class));
+        if (!result.isEmpty()) {
+            return result;
+        }
+        return new ArrayList<>();
+    }
+
+
     public Human findHumanByIdWithMyMapper(Long id) {
-        String query = "SELECT * FROM human WHERE id="+id;
+        String query = "SELECT * FROM human WHERE id=" + id;
         List<Human> result = jdbcTemplate.query(query, new HumanRowMapper());
         if (!result.isEmpty()) {
             return result.get(0);
@@ -92,7 +109,7 @@ public class HumanDao {
 
     public void saveOrUpdatedHuman(Human human) {
         String query;
-        if (human.getId()== null) {
+        if (human.getId() == null) {
             query = "INSERT INTO human VALUES (:id, :name, :lastname)";
         } else {
             query = "update human set name = :name, lastname= :lastname where id = :id";
@@ -128,7 +145,7 @@ public class HumanDao {
 
         List<SqlParameterSource> namedParameters = new ArrayList<>();
 
-        for(Human human : humans) {
+        for (Human human : humans) {
             namedParameters.add(new BeanPropertySqlParameterSource(human));
         }
 

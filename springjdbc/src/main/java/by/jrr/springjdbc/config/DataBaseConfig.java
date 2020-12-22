@@ -7,12 +7,16 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
 
 @Configuration
 @PropertySource("application.properties")
+@EnableTransactionManagement
 public class DataBaseConfig {
 
     @Value("${jdbc.url}")
@@ -51,5 +55,11 @@ public class DataBaseConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public DataSourceTransactionManager transactionManager() throws PropertyVetoException {
+        DataSourceTransactionManager dstm = new DataSourceTransactionManager(dataSource());
+        return dstm;
     }
 }
