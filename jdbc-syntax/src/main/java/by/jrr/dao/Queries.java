@@ -19,3 +19,4 @@ public class Queries {
 
     public static final String PREPARED_SELECT_USER_BY_ID = "SELECT * FROM `user` WHERE `id`=?;";
 }
+

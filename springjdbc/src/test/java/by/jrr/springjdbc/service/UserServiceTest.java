@@ -62,7 +62,7 @@ class UserServiceTest {
         userService.findAndPrintUsers(33, 34);
 
         try {
-            userService.updateLoginForUsers("gender",33, 34);
+            userService.updateLoginForUsers("new Login",33, 34);
         }catch (Exception ex) {
             System.out.println("ex.getMessage() = " + ex.getMessage());
         }
@@ -75,7 +75,43 @@ class UserServiceTest {
         userService.findAndPrintUsers(33, 34);
 
         try {
-            userService.updateLoginForUsersTransactional("balala",33, 34);
+            userService.updateLoginForUsersTransactional("Old Login",33, 34);
+        }catch (Exception ex) {
+            System.out.println("ex.getMessage() = " + ex.getMessage());
+        }
+
+        userService.findAndPrintUsers(33, 34);
+    }
+
+    @Test
+    void updateGenderForUsersRTE() throws Exception {
+        Character gender = 'M';
+        if(userService.findUser(33).getGender().equals('M')) {
+            gender = 'F';
+        }
+
+        userService.findAndPrintUsers(33, 34);
+
+        try {
+            userService.updateGenderForUsersRTE(gender,33, 34);
+        }catch (Exception ex) {
+            System.out.println("ex.getMessage() = " + ex.getMessage());
+        }
+
+        userService.findAndPrintUsers(33, 34);
+    }
+
+    @Test
+    void updateGenderForUsersGenderException() throws Exception {
+        Character gender = 'M';
+        if(userService.findUser(33).getGender().equals('M')) {
+            gender = 'F';
+        }
+
+        userService.findAndPrintUsers(33, 34);
+
+        try {
+            userService.updateGenderForUsersGenderException(gender,33, 34);
         }catch (Exception ex) {
             System.out.println("ex.getMessage() = " + ex.getMessage());
         }

@@ -11,10 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +35,15 @@ public class HumanDao {
             return result.get(0);
         }
         return null;
+    }
+
+    public Optional<Human> findOptionalHumanById(Long id) {
+        String query = "SELECT * FROM human WHERE id=" + id;
+        List<Human> result = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Human.class));
+        if (!result.isEmpty()) {
+            return Optional.of(result.get(0));
+        }
+        return Optional.empty();
     }
 
     public List<Human> findHumanInId(Long... id) {

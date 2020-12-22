@@ -46,14 +46,34 @@ public class UserService {
         }
     }
 
-    public void updateLoginForUsers(String login, Integer... ids) throws Exception {
+    @Transactional
+    public void updateGenderForUsersRTE(Character gender, Integer... ids) throws Exception {
+        for(int id : ids) {
+            userDao.updateUserGender(User.builder().id(id).gender(gender).build());
+            if (new Random().nextBoolean()) {
+                throw new RuntimeException("Fock you I'm out!");
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = GenderException.class)
+    public void updateGenderForUsersGenderException(Character gender, Integer... ids) throws Exception {
+        for(int id : ids) {
+            userDao.updateUserGender(User.builder().id(id).gender(gender).build());
+            if (new Random().nextBoolean()) {
+                throw new GenderException("Fock you I'm out!");
+            }
+        }
+    }
+
+    public void updateLoginForUsers(String login, Integer... ids)  {
         for(int id : ids) {
             userDao.updateUserLogin(User.builder().id(id).login(login).build());
         }
     }
 
     @Transactional
-    public void updateLoginForUsersTransactional(String login, Integer... ids) throws Exception {
+    public void updateLoginForUsersTransactional(String login, Integer... ids)  {
         for(int id : ids) {
             userDao.updateUserLogin(User.builder().id(id).login(login).build());
         }
